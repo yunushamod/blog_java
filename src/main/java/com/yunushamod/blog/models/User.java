@@ -8,6 +8,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
     @Column(nullable = false)
@@ -26,6 +27,6 @@ public class User {
     @OneToMany
     private List<Post> posts;
 
-    public static User user1 = new User(1L, "a@interswitchng.com", "abcdef", List.of());
-    public static User user2 = new User(2L, "b@interswitchng.com", "fedcba", List.of());
+    public static User user1 = new User(null, "a@interswitchng.com", "abcdef", List.of());
+    public static User user2 = new User(null, "b@interswitchng.com", "fedcba", List.of());
 }
