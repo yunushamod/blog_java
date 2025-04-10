@@ -23,7 +23,7 @@ public class Comment {
     @NotNull
     @Column(nullable = false)
     private String comment;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     @CreationTimestamp
     @NotNull

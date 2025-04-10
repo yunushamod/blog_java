@@ -5,9 +5,12 @@ import com.yunushamod.blog.dtos.PostResponse;
 import com.yunushamod.blog.dtos.Result;
 import com.yunushamod.blog.dtos.requests.EditPostRequest;
 import com.yunushamod.blog.dtos.requests.PostRequest;
+import com.yunushamod.blog.dtos.requests.Value;
 import com.yunushamod.blog.exceptions.InvalidCredentialsException;
 import com.yunushamod.blog.exceptions.RecordNotFoundException;
+import com.yunushamod.blog.models.Like;
 import com.yunushamod.blog.models.Post;
+import com.yunushamod.blog.repositories.LikeRepository;
 import com.yunushamod.blog.repositories.PostRepository;
 import com.yunushamod.blog.repositories.UserRepository;
 import io.micrometer.common.util.StringUtils;
@@ -23,6 +26,7 @@ import java.util.stream.Stream;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
     private final ModelMapper modelMapper;
 
     public Result<Boolean> createPost(PostRequest request) throws InvalidCredentialsException {
@@ -42,6 +46,14 @@ public class PostService {
             post.setContent(request.getContent());
         }
         postRepository.save(post);
+        return Result.OK(true, null);
+    }
+
+    public Result<Boolean> likePost(Long id, Value<String> request){
+        var post = postRepository.findById(id).orElseThrow(RecordNotFoundException::new);
+        var user = userRepository.findByUsername(request.getValue()).orElseThrow(InvalidCredentialsException::new);
+        var like = Like.builder().user(user).post(post).build();
+        likeRepository.save(like);
         return Result.OK(true, null);
     }
 

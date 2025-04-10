@@ -5,6 +5,7 @@ import com.yunushamod.blog.dtos.PostResponse;
 import com.yunushamod.blog.dtos.Result;
 import com.yunushamod.blog.dtos.requests.EditPostRequest;
 import com.yunushamod.blog.dtos.requests.PostRequest;
+import com.yunushamod.blog.dtos.requests.Value;
 import com.yunushamod.blog.exceptions.InvalidCredentialsException;
 import com.yunushamod.blog.exceptions.RecordNotFoundException;
 import com.yunushamod.blog.helpers.Constants;
@@ -44,5 +45,12 @@ public class PostController {
     public ResponseEntity<Result<Boolean>> updatePost(@PathVariable Long id, @Valid @RequestBody EditPostRequest postRequest) throws RecordNotFoundException {
         var result = postService.updatePost(id, postRequest);
         return ResponseEntity.status(result.getStatusCode()).body(result);
+    }
+
+    @PostMapping("{id}")
+    public ResponseEntity<Result<Boolean>> likePost(@PathVariable Long id, @Valid @RequestBody Value<String> request){
+        var result = postService.likePost(id, request);
+        return ResponseEntity.status(result.getStatusCode()).body(result);
+
     }
 }
